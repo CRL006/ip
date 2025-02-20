@@ -1,3 +1,9 @@
+import Exceptions.*;
+import tasks.Deadline;
+import tasks.Event;
+import tasks.Task;
+import tasks.todo;
+
 import java.util.Scanner;  // Import the Scanner class
 public class Bobby {
     public static String processInput(String input) throws UnknownCommandException {
