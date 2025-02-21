@@ -1,13 +1,38 @@
+import java.util.*;  // Import the Scanner class
 import Exceptions.*;
-import tasks.Deadline;
-import tasks.Event;
-import tasks.Task;
-import tasks.todo;
+import tasks.*;
+import java.io.*;
+import java.nio.file.*;
 
-import java.util.Scanner;  // Import the Scanner class
-import java.util.ArrayList;
 
 public class Bobby {
+    public static void saveToFile(ArrayList<Task> tasks) {
+        try {
+            FileWriter writer = new FileWriter("./src/main/java/data/bobby.txt");
+            for (Task task : tasks) {
+                writer.write(task.toString() + "\n");  // Add each task to the file, followed by a new line
+            }
+            writer.close();  // Close the writer when done
+        } catch (IOException e) {
+            System.out.println("Error saving tasks to file.");
+        }
+    }
+
+    public static ArrayList<Task> loadFromFile() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        try (Scanner fileScanner = new Scanner(new File("./src/main/java/data/bobby.txt"))) {
+            while (fileScanner.hasNextLine()) {
+                String taskLine = fileScanner.nextLine();
+                Task task = Task.fromString(taskLine);
+                System.out.println(task);
+                tasks.add(task);
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading tasks from file.");
+        }
+        return tasks;
+    }
+
     public static String processInput(String input) throws UnknownCommandException {
         if (input.equals("bye")) {
             return "Terminate chat";
@@ -95,7 +120,7 @@ public class Bobby {
     public static void printTaskDeletionMessages(ArrayList<Task> tasks, int deleteIndex) {
         tasks.get(deleteIndex).printDeleteAcknowledgement();
         tasks.get(deleteIndex).printTask();
-        tasks.get(deleteIndex).printTaskCount(tasks.size()-1); // +1 because array index starts with 0
+        tasks.get(deleteIndex).printTaskCount(tasks.size()-1); 
     }
 
     public static int getDeleteIndex(String input, ArrayList<Task> tasks) throws MissingTaskException, AlreadyDoneException, AlreadyUndoneException {
@@ -117,6 +142,7 @@ public class Bobby {
         try {
             switch (action) {
             case "Print list" -> {
+                System.out.println("Here are the tasks in your list: ");
                 for (int i = 0; i < tasks.size(); i++) {
                     System.out.print((i + 1) + ". ");
                     tasks.get(i).printTask();
@@ -124,26 +150,31 @@ public class Bobby {
             }
             case "Change isDone" -> {
                 splitMark(input, !input.contains("unmark"), tasks);
+                saveToFile(tasks);
             }
             case "Add todo" -> {
                 String item = splitToDo(input);
-                tasks.add(new todo(item));
+                tasks.add(new todo(item, false));
                 printTaskAdditionMessages(tasks);
+                saveToFile(tasks);
             }
             case "Add event" -> {
                 String[] eventDetails = splitEvent(input);
-                tasks.add(new Event(eventDetails[0], eventDetails[1], eventDetails[2]));
+                tasks.add(new Event(eventDetails[0], eventDetails[1], eventDetails[2], false));
                 printTaskAdditionMessages(tasks);
+                saveToFile(tasks);
             }
             case "Add deadline" -> {
                 String[] deadlineDetails = splitDeadline(input);
-                tasks.add(new Deadline(deadlineDetails[0], deadlineDetails[1]));
+                tasks.add(new Deadline(deadlineDetails[0], deadlineDetails[1], false));
                 printTaskAdditionMessages(tasks);
+                saveToFile(tasks);
             }
             case "Delete task" -> {
                 int deleteIndex = getDeleteIndex(input, tasks);
                 printTaskDeletionMessages(tasks, deleteIndex);
                 tasks.remove(deleteIndex);
+                saveToFile(tasks);
             }
             }
         } catch (MissingTaskException e) {
@@ -164,7 +195,17 @@ public class Bobby {
     public static void main(String[] args) {
         System.out.println("Hello! I'm Bobby! \nWhat can I do for you?");
         ArrayList<Task> tasks = new ArrayList<>();
+        tasks = loadFromFile();
         Scanner scanner = new Scanner(System.in);  // Create a Scanner object
+        File tasksList = new File("./src/main/java/data/bobby.txt");
+        try {
+            if (!tasksList.exists()) {
+                Files.createDirectories(Paths.get("./src/main/java/data"));
+                Files.createFile(Paths.get("./src/main/java/data/bobby.txt"));
+            }
+        } catch (IOException e){
+            System.out.println("Error retrieving file");
+        }
         String userInput = scanner.nextLine();
         while (true) {
             try {

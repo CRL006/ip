@@ -1,11 +1,13 @@
 package tasks;
 
 public class todo extends Task{
-    public String item;
 
-    public todo(String item) {
-        this.item = item;
-        this.isDone = false;
+    public todo(String item, boolean isDone) {
+        super(item, isDone);
+    }
+    @Override
+    public String toString() {
+        return "T | " + (isDone ? "done" : "not done") + " | " + item;
     }
     @Override
     public void printTask()

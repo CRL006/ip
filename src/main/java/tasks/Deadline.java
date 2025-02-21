@@ -4,10 +4,14 @@ public class Deadline extends Task{
     public String item;
     public String dueDate;
 
-    public Deadline(String item, String dueDate) {
+    public Deadline(String item, String dueDate, boolean isDone) {
+        super(item, isDone);
         this.item = item;
         this.dueDate = dueDate;
-        this.isDone = false;
+    }
+    @Override
+    public String toString() {
+        return "D | " + (isDone ? "done" : "not done") + " | " + item + " | by: " + dueDate;
     }
     @Override
     public void printTask()
