@@ -17,4 +17,7 @@ public class Task {
     public void printTask(){
         return;
     }
+    public void printDeleteAcknowledgement() {
+        System.out.println("Noted. I've removed this task: ");
+    }
 }
