@@ -1,11 +1,39 @@
+import java.util.*;  // Import the Scanner class
 import Exceptions.*;
-import tasks.Deadline;
-import tasks.Event;
-import tasks.Task;
-import tasks.todo;
+import tasks.*;
+import java.io.*;
+import java.nio.file.*;
 
-import java.util.Scanner;  // Import the Scanner class
+
 public class Bobby {
+    public static void saveToFile(ArrayList<Task> tasks) {
+        try {
+            FileWriter writer = new FileWriter("./src/main/java/data/bobby.txt");
+            for (Task task : tasks) {
+                writer.write(task.toString() + "\n");  // Add each task to the file, followed by a new line
+            }
+            writer.close();  // Close the writer when done
+        } catch (IOException e) {
+            System.out.println("Error saving tasks to file.");
+        }
+    }
+
+    public static ArrayList<Task> loadFromFile() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        try (Scanner fileScanner = new Scanner(new File("./src/main/java/data/bobby.txt"))) {
+            while (fileScanner.hasNextLine()) {
+                String taskLine = fileScanner.nextLine();
+                // Parse the task string and create the Task object based on the data
+                Task task = Task.fromString(taskLine);  // You would need a fromString() method to parse the task
+                System.out.println(task);
+                tasks.add(task);
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading tasks from file.");
+        }
+        return tasks;
+    }
+
     public static String processInput(String input) throws UnknownCommandException {
         if (input.equals("bye")) {
             return "Terminate chat";
@@ -19,31 +47,33 @@ public class Bobby {
             return "Add event";
         } else if (input.contains("deadline")) {
             return "Add deadline";
+        } else if (input.contains("delete")) {
+            return "Delete task";
         } else {
             throw new UnknownCommandException();
         }
     }
 
-    public static void splitMark(String input, boolean isMarked, Task[] tasks, int tasksCounter) throws MissingTaskException, AlreadyDoneException, AlreadyUndoneException {
+    public static void splitMark(String input, boolean isMarked, ArrayList<Task> tasks) throws MissingTaskException, AlreadyDoneException, AlreadyUndoneException {
         String[] splitMark = input.split(" ");
         int markIndex = Integer.parseInt(splitMark[1]) - 1;
-        if (markIndex < 0 || markIndex >= tasksCounter) {
+        if (markIndex < 0 || markIndex >= tasks.size()) {
             throw new MissingTaskException();
         }
         if (isMarked) {
-            if (tasks[markIndex].isDone) {
+            if (tasks.get(markIndex).isDone) {
                 throw new AlreadyDoneException();
             }
             System.out.println("Nice! I've marked this task as done:");
-            tasks[markIndex].setDone(true);
-            tasks[markIndex].printTask();
+            tasks.get(markIndex).setDone(true);
+            tasks.get(markIndex).printTask();
         } else {
-            if (!tasks[markIndex].isDone) {
+            if (!tasks.get(markIndex).isDone) {
                 throw new AlreadyUndoneException();
             }
             System.out.println("OK, I've marked this task as not done yet:");
-            tasks[markIndex].setDone(false);
-            tasks[markIndex].printTask();
+            tasks.get(markIndex).setDone(false);
+            tasks.get(markIndex).printTask();
         }
     }
 
@@ -87,47 +117,69 @@ public class Bobby {
 
         return input.substring(5, stringLength);
     }
-    public static void printTaskAdditionMessages(Task[] tasks, int tasksCounter) {
-        tasks[tasksCounter].printAcknowledgement();
-        tasks[tasksCounter].printTask();
-        tasks[tasksCounter].printTaskCount(tasksCounter+1); // +1 because array index starts with 0
+
+    public static void printTaskDeletionMessages(ArrayList<Task> tasks, int deleteIndex) {
+        tasks.get(deleteIndex).printDeleteAcknowledgement();
+        tasks.get(deleteIndex).printTask();
+        tasks.get(deleteIndex).printTaskCount(tasks.size()-1); // +1 because array index starts with 0
     }
 
-    public static int carryOut(String action, String input, Task[] tasks, int tasksCounter) {
+    public static int getDeleteIndex(String input, ArrayList<Task> tasks) throws MissingTaskException, AlreadyDoneException, AlreadyUndoneException {
+        String[] splitDelete = input.split(" ");
+        int deleteIndex = Integer.parseInt(splitDelete[1]) - 1;
+        if (deleteIndex < 0 || deleteIndex >= tasks.size()) {
+            throw new MissingTaskException();
+        }
+        return deleteIndex;
+    }
+
+    public static void printTaskAdditionMessages(ArrayList<Task> tasks) {
+        tasks.get(tasks.size()-1).printAcknowledgement();
+        tasks.get(tasks.size()-1).printTask();
+        tasks.get(tasks.size()-1).printTaskCount(tasks.size());
+    }
+
+    public static void carryOut(String action, String input, ArrayList<Task> tasks) {
         try {
             switch (action) {
             case "Print list" -> {
-                for (int i = 0; i < tasksCounter; i++) {
+                System.out.println("Here are the tasks in your list: ");
+                for (int i = 0; i < tasks.size(); i++) {
                     System.out.print((i + 1) + ". ");
-                    tasks[i].printTask();
+                    tasks.get(i).printTask();
                 }
             }
             case "Change isDone" -> {
-                splitMark(input, !input.contains("unmark"), tasks, tasksCounter);
+                splitMark(input, !input.contains("unmark"), tasks);
+                saveToFile(tasks);
             }
             case "Add todo" -> {
                 String item = splitToDo(input);
-                tasks[tasksCounter] = new todo(item);
-                printTaskAdditionMessages(tasks, tasksCounter);
-                tasksCounter++;
+                tasks.add(new todo(item, false));
+                printTaskAdditionMessages(tasks);
+                saveToFile(tasks);
             }
             case "Add event" -> {
-                String[] eventDetails = new String[3];
-                eventDetails = splitEvent(input);
-                tasks[tasksCounter] = new Event(eventDetails[0], eventDetails[1], eventDetails[2]);
-                printTaskAdditionMessages(tasks, tasksCounter);
-                tasksCounter++;
+                String[] eventDetails = splitEvent(input);
+                tasks.add(new Event(eventDetails[0], eventDetails[1], eventDetails[2], false));
+                printTaskAdditionMessages(tasks);
+                saveToFile(tasks);
             }
             case "Add deadline" -> {
-                String[] deadlineDetails = new String[2];
-                deadlineDetails = splitDeadline(input);
-                tasks[tasksCounter] = new Deadline(deadlineDetails[0], deadlineDetails[1]);
-                printTaskAdditionMessages(tasks, tasksCounter);
-                tasksCounter++;
+                String[] deadlineDetails = splitDeadline(input);
+                tasks.add(new Deadline(deadlineDetails[0], deadlineDetails[1], false));
+                printTaskAdditionMessages(tasks);
+                saveToFile(tasks);
+            }
+            case "Delete task" -> {
+                int deleteIndex = getDeleteIndex(input, tasks);
+                printTaskDeletionMessages(tasks, deleteIndex);
+                tasks.remove(deleteIndex);
+                saveToFile(tasks);
             }
             }
         } catch (MissingTaskException e) {
-            System.out.println("Sorry, you only have " + (tasksCounter) + " tasks in the system!");
+            System.out.println("Sorry, you only have " + (tasks.size()) + " tasks in the system!");
         } catch (AlreadyDoneException e) {
             System.out.println("That task has already been done!");
         } catch (AlreadyUndoneException e) {
@@ -139,14 +191,22 @@ public class Bobby {
             System.out.println("Please enter a date/time!");
             System.out.println("Examples: \n - event meeting /from 3pm /to 5pm \n - deadline return book /by Friday");
         }
-        return tasksCounter;
     }
 
     public static void main(String[] args) {
-        int tasksCounter = 0;
         System.out.println("Hello! I'm Bobby! \nWhat can I do for you?");
-        Task[] tasks = new Task[100];
+        ArrayList<Task> tasks = new ArrayList<>();
+        tasks = loadFromFile();
         Scanner scanner = new Scanner(System.in);  // Create a Scanner object
+        File tasksList = new File("./src/main/java/data/bobby.txt");
+        try {
+            if (!tasksList.exists()) {
+                Files.createDirectories(Paths.get("./src/main/java/data"));
+                Files.createFile(Paths.get("./src/main/java/data/bobby.txt"));
+            }
+        } catch (IOException e){
+            System.out.println("Error retrieving file");
+        }
         String userInput = scanner.nextLine();
         while (true) {
             try {
@@ -155,7 +215,7 @@ public class Bobby {
                     System.out.println("Bye! Hope to see you again soon!");
                     break;
                 }
-                tasksCounter = carryOut(action, userInput, tasks, tasksCounter);
+                carryOut(action, userInput, tasks);
             } catch (UnknownCommandException e) {
                 System.out.println("I'm sorry I don't have that functionality yet!! Please try something else!");
                 System.out.println("Examples of things I can do: \n - add todo\n - add event \n - add deadline");
