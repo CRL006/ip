@@ -23,8 +23,7 @@ public class Bobby {
         try (Scanner fileScanner = new Scanner(new File("./src/main/java/data/bobby.txt"))) {
             while (fileScanner.hasNextLine()) {
                 String taskLine = fileScanner.nextLine();
-                // Parse the task string and create the Task object based on the data
-                Task task = Task.fromString(taskLine);  // You would need a fromString() method to parse the task
+                Task task = Task.fromString(taskLine);
                 System.out.println(task);
                 tasks.add(task);
             }
@@ -121,7 +120,7 @@ public class Bobby {
     public static void printTaskDeletionMessages(ArrayList<Task> tasks, int deleteIndex) {
         tasks.get(deleteIndex).printDeleteAcknowledgement();
         tasks.get(deleteIndex).printTask();
-        tasks.get(deleteIndex).printTaskCount(tasks.size()-1); // +1 because array index starts with 0
+        tasks.get(deleteIndex).printTaskCount(tasks.size()-1); 
     }
 
     public static int getDeleteIndex(String input, ArrayList<Task> tasks) throws MissingTaskException, AlreadyDoneException, AlreadyUndoneException {
