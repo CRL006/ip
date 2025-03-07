@@ -1,3 +1,2 @@
 T | not done | read book
 D | not done | return book | by: Sunday
-E | not done | meet | from: 2pm | to: 4pm

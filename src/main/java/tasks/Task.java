@@ -7,21 +7,27 @@ public class Task {
         this.item = item;
         this.isDone = isDone;
     }
+
     public void setDone(boolean done) {
         isDone = done;
     }
+
     public void printAcknowledgement() {
         System.out.println("Got it. I've added this task:");
     }
+
     public void printTaskCount(int n) {
         System.out.println("Now you have " + n + " task(s) in the list.");
     }
+
     public void printTask(){
         return;
     }
+
     public void printDeleteAcknowledgement() {
         System.out.println("Noted. I've removed this task: ");
     }
+
     public String toString() {
         return " | " + (isDone ? "done" : "not done") + " | " + item;
     }

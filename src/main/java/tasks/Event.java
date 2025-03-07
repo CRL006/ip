@@ -9,10 +9,12 @@ public class Event extends Task{
         this.start = start;
         this.end = end;
     }
+
     @Override
     public String toString() {
         return "E | " + (isDone ? "done" : "not done") + " | " + item + " | from: " + start + " | to: " + end;
     }
+
     @Override
     public void printTask()
     {

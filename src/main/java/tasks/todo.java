@@ -5,10 +5,12 @@ public class todo extends Task{
     public todo(String item, boolean isDone) {
         super(item, isDone);
     }
+
     @Override
     public String toString() {
         return "T | " + (isDone ? "done" : "not done") + " | " + item;
     }
+
     @Override
     public void printTask()
     {
