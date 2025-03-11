@@ -1,14 +1,14 @@
 import tasks.Deadline;
 import tasks.Event;
 import tasks.Task;
-import tasks.todo;
+import tasks.Todo;
 
 import java.util.ArrayList;
 
 public class TaskList {
 
     public static void addTodo(String item, ArrayList<Task> tasks) {
-        tasks.add(new todo(item, false));
+        tasks.add(new Todo(item, false));
     }
 
     public static void addEvent(String item, String start, String end, ArrayList<Task> tasks) {
