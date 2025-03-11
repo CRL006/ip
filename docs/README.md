@@ -19,16 +19,16 @@ Some examples commands you can try:
    - ```bye```: Exits the todo-list
 
 
-## Adding tasks: ```task```
+## Adding tasks: ```todo```
 
-Adds a task to the todo-list
+Adds an item to the todo-list
 
-Format: `task TASK_NAME`
+Format: `todo TASK_NAME`
 
 Examples:
 
 ```
-task read book
+todo read book
 ```
 
 ## Adding deadlines: ```deadline```
