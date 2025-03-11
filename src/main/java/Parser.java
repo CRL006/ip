@@ -248,12 +248,6 @@ public class Parser {
      * @param storage The storage object used to save the updated task list to a file.
      * @param ui The UI object responsible for displaying task-related messages to the user.
      * @param tasklist The TaskList object that handles the management of tasks, including adding and deleting tasks.
-     *
-     * @throws MissingTaskException If the user tries to mark or unmark a task that does not exist in the task list.
-     * @throws AlreadyDoneException If the user attempts to mark a task as done that is already marked as done.
-     * @throws AlreadyUndoneException If the user attempts to unmark a task that has not been marked as done.
-     * @throws MissingDescriptionException If the user fails to provide a description when adding a task.
-     * @throws MissingDateTimeException If the user fails to provide the required date/time information for event or deadline tasks.
      */
     public static void carryOut(String action, String input, ArrayList<Task> tasks, Storage storage, Ui ui, TaskList tasklist) {
         try {
