@@ -1,5 +1,15 @@
 package tasks;
 
+/**
+ * Represents a generic task with a description and a completion status.
+ *
+ * <p>The {@code Task} class provides basic functionality for managing tasks, including
+ * setting their completion status, printing task-related information, and converting
+ * task information from a string representation.</p>
+ *
+ * <p>It is a parent class of {@link Todo}, {@link Deadline} and {@link Event} and provides a template for them to inherit
+ * </p>
+ */
 public class Task {
     public String item;
     public boolean isDone;
@@ -20,8 +30,26 @@ public class Task {
         System.out.println("Now you have " + n + " task(s) in the list.");
     }
 
+    /**
+     * Prints the task details.
+     * <p>
+     * This method is intended to be overridden by subclasses {@link Deadline}, {@link Event}, {@link Todo})
+     * to provide specific behavior for printing task details. The base implementation does nothing.
+     * </p>
+     */
     public void printTask(){
         return;
+    }
+
+    /**
+     * Returns the task details.
+     * <p>
+     * This method is intended to be overridden by subclasses {@link Deadline}, {@link Event}, {@link Todo})
+     * to provide specific behavior for returning the task details. The base implementation does nothing.
+     * </p>
+     */
+    public String getTask(){
+        return "";
     }
 
     public void printDeleteAcknowledgement() {
@@ -32,12 +60,24 @@ public class Task {
         return " | " + (isDone ? "done" : "not done") + " | " + item;
     }
 
+    /**
+     * Converts a string representation of a task back into a {@link Task} object from the file.
+     * <p>
+     * This method processes a string formatted with task details
+     * and converts it into the corresponding {@link Todo}, {@link Deadline},
+     * or {@link Event} object. It is loads tasks from the file.
+     * </p>
+     *
+     * @param taskString The string representation of the task, formatted as "Type | Status | Description | Additional Info".
+     * @return A {@link Task} object corresponding to the string input, which could be a {@link Todo}, {@link Deadline}, or {@link Event}.
+     *         If the string does not match any known task types, a default {@link Task} with "Not found" description is returned.
+     */
     public static Task fromString(String taskString) {
         String[] parts = taskString.split(" \\| ");
         if (parts[0].equals("T")) {
             boolean isDone = parts[1].equals("done");
             String item = parts[2];
-            return new todo(item, isDone);
+            return new Todo(item, isDone);
         } else if (parts[0].equals("D")) {
             boolean isDone = parts[1].equals("done");
             String item = parts[2];
