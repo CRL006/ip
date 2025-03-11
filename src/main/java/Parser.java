@@ -22,6 +22,8 @@ public class Parser {
             return "Add deadline";
         } else if (input.contains("delete")) {
             return "Delete task";
+        } else if (input.contains("find")) {
+            return "Find keyword";
         } else {
             throw new UnknownCommandException();
         }
@@ -144,6 +146,23 @@ public class Parser {
                 printTaskDeletionMessages(tasks, deleteIndex);
                 tasklist.deleteItem(deleteIndex, tasks);
                 storage.saveToFile(tasks);
+            }
+            case "Find keyword" -> {
+                int matchingTasks = 0;
+                String keyword = input.substring(5, input.length());
+                for (int i = 0; i < tasks.size(); i++) {
+                    if (tasks.get(i).getTask().contains(keyword)) {
+                        if (matchingTasks == 0) {
+                            System.out.println("Here are the matching tasks in your list:");
+                        }
+                        System.out.print((matchingTasks + 1) + ". ");
+                        tasks.get(i).printTask();
+                        matchingTasks++;
+                    }
+                }
+                if (matchingTasks == 0) {
+                    System.out.println("There were no matching tasks in your list!");
+                }
             }
             }
         } catch (MissingTaskException e) {
