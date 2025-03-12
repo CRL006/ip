@@ -1,6 +1,10 @@
-import java.util.*;  // Import the Scanner class
-import Exceptions.*;
-import tasks.*;
+import java.util.ArrayList;
+import exceptions.UnknownCommandException;
+import functions.Parser;
+import functions.Storage;
+import functions.TaskList;
+import functions.Ui;
+import tasks.Task;
 
 
 public class Bobby {
@@ -8,13 +12,13 @@ public class Bobby {
     private static Ui ui;
     private static Storage storage;
     private static Parser parser;
-    private static TaskList tasklist;
+    private static TaskList taskList;
 
     public static void main(String[] args) {
         ui = new Ui();
         storage = new Storage();
         parser = new Parser();
-        tasklist = new TaskList();
+        taskList = new TaskList();
         ui.printWelcomeMessage();
         ArrayList<Task> tasks;
         tasks = storage.loadFromFile();
@@ -27,7 +31,7 @@ public class Bobby {
                     ui.printEndMessage();
                     break;
                 }
-                parser.carryOut(action, userInput, tasks, storage, ui, tasklist);
+                parser.carryOut(action, userInput, tasks, storage, ui, taskList);
             } catch (UnknownCommandException e) {
                 ui.printUnknownCommandError();
             }

@@ -1,3 +1,5 @@
+package functions;
+
 import tasks.Task;
 
 import java.io.File;
@@ -90,9 +92,9 @@ public class Storage {
         try {
             FileWriter writer = new FileWriter("./src/main/java/data/bobby.txt");
             for (Task task : tasks) {
-                writer.write(task.toString() + "\n");  // Add each task to the file, followed by a new line
+                writer.write(task.toString() + "\n");
             }
-            writer.close();  // Close the writer when done
+            writer.close();
         } catch (IOException e) {
             System.out.println("Error saving tasks to file.");
         }

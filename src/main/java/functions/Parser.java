@@ -1,18 +1,25 @@
-import Exceptions.*;
+package functions;
+
+import exceptions.*;
 import tasks.Task;
 
 import java.util.ArrayList;
 
 /**
- * The {@code Parser} class is responsible for processing and interpreting user input commands in a task management application.
+ * The {@code Parser} class is responsible for processing and interpreting
+ * user input commands in a task management application.
  * <p>
- * This class contains methods for parsing various commands, such as adding tasks, marking tasks as done or undone,
- * deleting tasks, and finding tasks that match a keyword. It handles different task types, including to-do tasks, event tasks,
- * and deadline tasks, by extracting relevant information from the user input. The methods in this class also ensure that the
- * provided input is valid and raise appropriate exceptions if the input format is incorrect or if actions are not possible.
+ * This class contains methods for parsing various commands,
+ * such as adding tasks, marking tasks as done or undone,
+ * deleting tasks, and finding tasks that match a keyword.
+ * It handles different task types, including to-do tasks, event tasks,
+ * and deadline tasks, by extracting relevant information from the user input.
+ * The methods in this class also ensure that the provided input is valid and raise appropriate exceptions
+ * if the input format is incorrect or if actions are not possible.
  * </p>
  * <p>
- * The class provides functionality to carry out user commands, which are then executed by updating the task list and interacting
+ * The class provides functionality to carry out user commands, which are then executed
+ * by updating the task list and interacting
  * with storage and UI components.
  * </p>
  */
@@ -252,38 +259,39 @@ public class Parser {
     public static void carryOut(String action, String input, ArrayList<Task> tasks, Storage storage, Ui ui, TaskList tasklist) {
         try {
             switch (action) {
-            case "Print list" -> {
+            case "Print list":
                 ui.printTaskList(tasks);
-            }
-            case "Change isDone" -> {
+                break;
+
+            case "Change isDone":
                 splitMark(input, !input.contains("unmark"), tasks);
                 storage.saveToFile(tasks);
-            }
-            case "Add todo" -> {
+                break;
+            case "Add todo":
                 String item = splitToDo(input);
                 tasklist.addTodo(item, tasks);
                 printTaskAdditionMessages(tasks);
                 storage.saveToFile(tasks);
-            }
-            case "Add event" -> {
+                break;
+            case "Add event":
                 String[] eventDetails = splitEvent(input);
                 tasklist.addEvent(eventDetails[0], eventDetails[1], eventDetails[2], tasks);
                 printTaskAdditionMessages(tasks);
                 storage.saveToFile(tasks);
-            }
-            case "Add deadline" -> {
+                break;
+            case "Add deadline":
                 String[] deadlineDetails = splitDeadline(input);
                 tasklist.addDeadline(deadlineDetails[0], deadlineDetails[1], tasks);
                 printTaskAdditionMessages(tasks);
                 storage.saveToFile(tasks);
-            }
-            case "Delete task" -> {
+                break;
+            case "Delete task":
                 int deleteIndex = getDeleteIndex(input, tasks);
                 printTaskDeletionMessages(tasks, deleteIndex);
                 tasklist.deleteItem(deleteIndex, tasks);
                 storage.saveToFile(tasks);
-            }
-            case "Find keyword" -> {
+                break;
+            case "Find keyword":
                 int matchingTasks = 0;
                 String keyword = input.substring(5, input.length());
                 for (int i = 0; i < tasks.size(); i++) {
@@ -299,7 +307,7 @@ public class Parser {
                 if (matchingTasks == 0) {
                     System.out.println("There were no matching tasks in your list!");
                 }
-            }
+                break;
             }
         } catch (MissingTaskException e) {
             System.out.println("Sorry, you only have " + (tasks.size()) + " tasks in the system!");
