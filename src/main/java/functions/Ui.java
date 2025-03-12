@@ -2,7 +2,7 @@ package functions;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import tasks.*;
+import tasks.Task;
 
 /**
  * The {@code Ui} class is responsible for processing and interpreting user input commands in a task management application.
