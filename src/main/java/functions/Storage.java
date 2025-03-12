@@ -50,7 +50,7 @@ public class Storage {
                 tasks.add(task);
             }
         } catch (IOException e) {
-            System.out.println("Error loading tasks from file. New bobby.txt file has been created.");
+            System.out.println("Error loading tasks from file (This is normal upon first launch). New bobby.txt file has been created.");
         }
         return tasks;
     }

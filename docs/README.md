@@ -1,8 +1,6 @@
 # Bobby User Guide
 
-// Product screenshot goes here
-
-// Product intro goes here
+Bobby is a greenfield Java project. It's name is inspired by *Bob* the minion. Given below are the instructions on how to use it.
 
 ## Quick Start
 
