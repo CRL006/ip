@@ -1,6 +1,8 @@
 # Bobby User Guide
 
-Bobby is a greenfield Java project. It's name is inspired by *Bob* the minion. Given below are the instructions on how to use it.
+// Product screenshot goes here
+
+// Product intro goes here
 
 ## Quick Start
 
@@ -17,16 +19,16 @@ Some examples commands you can try:
    - ```bye```: Exits the todo-list
 
 
-## Adding tasks: ```todo```
+## Adding tasks: ```task```
 
-Adds an item to the todo-list
+Adds a task to the todo-list
 
-Format: `todo TASK_NAME`
+Format: `task TASK_NAME`
 
 Examples:
 
 ```
-todo read book
+task read book
 ```
 
 ## Adding deadlines: ```deadline```
