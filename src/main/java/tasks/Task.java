@@ -49,7 +49,7 @@ public class Task {
      * </p>
      */
     public String getTask(){
-        return "";
+        return this.item;
     }
 
     public void printDeleteAcknowledgement() {
