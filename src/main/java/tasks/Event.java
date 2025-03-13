@@ -1,8 +1,8 @@
 package tasks;
 
 /**
- * The {@code Deadline} class represents an event which has an item description,
- * a due date, and a completion status (done or not done).
+ * The {@code Event} class represents an event which has an item description,
+ * a start and end time, and a completion status (done or not done).
  *
  * <p>It is a subclass of {@link Task} and inherits its attributes and methods,
  * including the task description and completion status. The event task includes
