@@ -1,26 +1,114 @@
-# Duke project template
+# Bobby User Guide
 
-This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
+Bobby is a greenfield Java project. Its name is inspired by *Bob* the minion
 
-## Setting up in Intellij
+## Quick Start
 
-Prerequisites: JDK 17, update Intellij to the most recent version.
+1. Ensure you have Java ```17``` or above installed in your Computer.
+2. Download the latest.jar file
+3. Copy the file to the folder you want to use as the *home folder* for you todo-list
+4. Open a command terminal, ```cd``` into the folder you put the jar file in, and use the ```java -jar bobby,jar```
+   command to run the application.
+5. Type the command in the command box and press Enter to execute it.  
+   Some examples commands you can try:
+   - ```list```: Lists all tasks
+   - ```todo read book```: Adds the ```read book``` task to the todo-list
+   - ```delete 3```: Deletes the third task shown in the current list
+   - ```bye```: Exits the todo-list
 
-1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project first)
-1. Open the project into Intellij as follows:
-   1. Click `Open`.
-   1. Select the project directory, and click `OK`.
-   1. If there are any further prompts, accept the defaults.
-1. Configure the project to use **JDK 17** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
-   In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/Duke.java` file, right-click it, and choose `Run Duke.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
-   ```
-   Hello from
-    ____        _        
-   |  _ \ _   _| | _____ 
-   | | | | | | | |/ / _ \
-   | |_| | |_| |   <  __/
-   |____/ \__,_|_|\_\___|
-   ```
 
-**Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+## Adding tasks: ```task```
+
+Adds a task to the todo-list
+
+Format: `task TASK_NAME`
+
+Examples:
+
+```
+task read book
+```
+
+## Adding deadlines: ```deadline```
+
+Adds a deadline to the todo-list
+
+Format: `deadline DEADLINE_NAME /by DEADLINE_TIME`
+
+Examples:
+
+```
+deadline return book /by Sunday
+```
+
+## Adding events: ```event```
+
+Adds an event to the todo-list
+
+Format: `event EVENT_NAME /from EVENT_START_TIME /to EVENT_END_TIME`
+
+Examples:
+
+```
+event group meeting /from 2pm /to 4pm
+```
+
+## Listing all events: ```list```
+
+Shows a list of all the tasks in the todo-list
+
+Format: `list`
+
+## Marking tasks as done: ```mark```
+
+Marks a chosen task as done in todo-list
+
+Format: `mark TASK_INDEX`
+
+Examples:
+
+```
+mark 1
+```
+
+## Marking tasks as undone: ```unmark```
+
+Marks a chosen task as undone in todo-list
+
+Format: `unmark TASK_INDEX`
+
+Examples:
+
+```
+unmark 1
+```
+
+## Deleting a task: ```delete```
+
+Deletes a chosen task from the todo-list
+
+Format: `delete TASK_INDEX`
+
+Examples:
+
+```
+delete 1
+```
+
+## Finding a task: ```find```
+
+Finds related tasks in the todo-list, given a keyword.
+
+Format: `find KEYWORD`
+
+Examples:
+
+```
+find book
+```
+
+## Quitting the programme: ```bye```
+
+Exits the programme
+
+Format: `bye`
